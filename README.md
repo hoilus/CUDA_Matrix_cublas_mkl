@@ -12,3 +12,25 @@ void add(int n, float *x, float *y) {
     y[i] = x[i] + y[i];
 }
 ```
+
+### 2. gpucpptranspose.cu:
+#### shared memory on-chip is much faster than local and global memory. It is thus a good idea to do the necessar arithemetic calculations on device, and minimize the data transit between gpu and cpu.
+```
+// Transpose via shared memory
+__global__
+void gpu_matrix_trans_sharedmem(double *mat_in, double *mat_out, int cols, int rows) {
+  // shared memory (48KB/N per block), N is the number of blocks on the same multiprocessor
+  __shared__ double tile[blockSize*blockSize];
+
+  int idx = blockIdx.x * blockDim.x + threadIdx.x;
+  int idy = blockIdx.y * blockDim.y + threadIdx.y;
+
+  if (idx < cols && idy < rows)
+    tile[threadIdx.x + blockSize*threadIdx.y] = mat_in[idy*cols + idx];
+
+  __syncthreads();
+
+  if (idx < cols && idy < rows)
+    mat_out[idy + idx*rows] = tile[threadIdx.x + blockSize*threadIdx.y];
+}
+```
