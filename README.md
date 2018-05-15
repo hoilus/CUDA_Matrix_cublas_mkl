@@ -56,7 +56,7 @@ Time(%)      Time     Calls       Avg       Min       Max  Name
 ```
 
 ### 3. gpucppMatMul.cu:
-#### matrix-matrix multiplication consumes most of the computation time in scientific computations and deep learning. cublas and blas are the best choices when we do 'dgemm'. 
+#### matrix-matrix multiplication consumes most of the computation time in scientific computations and deep learning. cublas and blas are the best choices when we do **_GEMM_**. 
 #### How to compile the code including both cublas and blas?
 ```
 nvcc gpucppMatMul.cu -std=c++11 -lcublas -L/opt/apps/intel/16.0.1.150/compilers_and_libraries_2016.1.150/linux/mkl/lib/intel64 --linker-options /opt/apps/intel/16.0.1.150/compilers_and_libraries_2016.1.150/linux/mkl/lib/intel64/libmkl_intel_lp64.a,/opt/apps/intel/16.0.1.150/compilers_and_libraries_2016.1.150/linux/mkl/lib/intel64/libmkl_sequential.a,/opt/apps/intel/16.0.1.150/compilers_and_libraries_2016.1.150/linux/mkl/lib/intel64/libmkl_core.a,-lpthread -o gpuMul
@@ -86,13 +86,12 @@ void gpu_blas_multi(double *matB, double *matA, double *matC, int m, int k, int 
 #### For the two 32768 x 1024 and 1024 x 32768 test matrix:
 ```
 GPU matrix multiplication success!!!
-GPU matrix multiplication time: 11962.5 ms.
-CPU matrix multiplication time: 108.519 s.
-==12238== Profiling application: ./gpuMul
-==12238== Profiling result:
+GPU matrix multiplication by cublas costs: **_5870.52 ms_**.
+CPU matrix multiplication by blas costs: **_105.965 s_**.
+==12784== Profiling application: ./gpuMul
+==12784== Profiling result:
 Time(%)      Time     Calls       Avg       Min       Max  Name
- 51.68%  6.09732s         1  6.09732s  6.09732s  6.09732s  gpu_matrix_multi(double*, double*, double*, int, int, int)
- 32.34%  3.81614s         1  3.81614s  3.81614s  3.81614s  [CUDA memcpy DtoH]
- 15.31%  1.80619s         1  1.80619s  1.80619s  1.80619s  dgemm_sm_heavy_ldg_nn
-  0.67%  79.074ms         3  26.358ms  1.5680us  39.752ms  [CUDA memcpy HtoD]
+ 66.95%  3.81865s         1  3.81865s  3.81865s  3.81865s  [CUDA memcpy DtoH]
+ 31.67%  1.80622s         1  1.80622s  1.80622s  1.80622s  dgemm_sm_heavy_ldg_nn
+  1.39%  79.091ms         3  26.364ms  1.5360us  39.840ms  [CUDA memcpy HtoD]
 ```
