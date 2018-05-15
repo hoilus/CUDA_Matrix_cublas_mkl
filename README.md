@@ -84,14 +84,17 @@ void gpu_blas_multi(double *matB, double *matA, double *matC, int m, int k, int 
 }
 ```
 #### For the two 32768 x 1024 and 1024 x 32768 test matrix:
+#### When we relace blas by cublas, we can have **_x20_** improvement.
 ```
 GPU matrix multiplication success!!!
-GPU matrix multiplication by cublas costs: **_5870.52 ms_**.
-CPU matrix multiplication by blas costs: **_105.965 s_**.
+GPU matrix multiplication by cublas costs: 5870.52 ms.
+GPU matrix multiplication by naive method costs: 10011.6 ms.
+CPU matrix multiplication by blas costs: 105.965 s.
 ==12784== Profiling application: ./gpuMul
 ==12784== Profiling result:
 Time(%)      Time     Calls       Avg       Min       Max  Name
  66.95%  3.81865s         1  3.81865s  3.81865s  3.81865s  [CUDA memcpy DtoH]
  31.67%  1.80622s         1  1.80622s  1.80622s  1.80622s  dgemm_sm_heavy_ldg_nn
   1.39%  79.091ms         3  26.364ms  1.5360us  39.840ms  [CUDA memcpy HtoD]
+ 60.93%  6.09706s         1  6.09706s  6.09706s  6.09706s  gpu_matrix_multi(double*, double*, double*, int, int, int)
 ```
