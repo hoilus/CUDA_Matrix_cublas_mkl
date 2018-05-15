@@ -84,7 +84,7 @@ void gpu_blas_multi(double *matB, double *matA, double *matC, int m, int k, int 
 }
 ```
 #### For the two 32768 x 1024 and 1024 x 32768 test matrix:
-#### When we relace blas by cublas, we can have **_x20_** improvement.
+#### When we replace blas by cublas, we can have **_x20_** improvement.
 ```
 GPU matrix multiplication success!!!
 GPU matrix multiplication by cublas costs: 5870.52 ms.
