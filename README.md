@@ -39,3 +39,16 @@ void gpu_matrix_trans_coales_sharedmem(double *mat_in, double *mat_out) {
 }
 
 ```
+```
+GPU matrix transpose success!!!
+GPU matrix multiplication time: 6.31702 ms.
+==11721== Profiling application: ./gputrans
+==11721== Profiling result:
+Time(%)      Time     Calls       Avg       Min       Max  Name
+ 62.93%  3.1452ms         1  3.1452ms  3.1452ms  3.1452ms  [CUDA memcpy DtoH]
+ 25.90%  1.2943ms         1  1.2943ms  1.2943ms  1.2943ms  [CUDA memcpy HtoD]
+  4.17%  208.58us         1  208.58us  208.58us  208.58us  gpu_matrix_trans_naive(double*, double*)
+  2.61%  130.66us         1  130.66us  130.66us  130.66us  gpu_matrix_trans_coales_sharedmem(double*, double*)
+  2.60%  129.73us         1  129.73us  129.73us  129.73us  gpu_matrix_trans_sharedmem(double*, double*)
+  1.79%  89.377us         1  89.377us  89.377us  89.377us  gpu_matrix_trans_coales_sharedmem_NoBankConfl(double*, double*)
+```
