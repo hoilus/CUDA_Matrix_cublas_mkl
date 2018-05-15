@@ -56,3 +56,7 @@ Time(%)      Time     Calls       Avg       Min       Max  Name
 
 ### 3. gpucppMatMul.cu:
 #### matrix-matrix multiplication consumes most of the computation time in scientific computations and deep learning. cublas and blas are the best choices when we do 'dgemm'. 
+#### How to compile the code including both cublas and blas?
+```
+nvcc gpucppMatMul.cu -std=c++11 -lcublas -L/opt/apps/intel/16.0.1.150/compilers_and_libraries_2016.1.150/linux/mkl/lib/intel64 --linker-options /opt/apps/intel/16.0.1.150/compilers_and_libraries_2016.1.150/linux/mkl/lib/intel64/libmkl_intel_lp64.a,/opt/apps/intel/16.0.1.150/compilers_and_libraries_2016.1.150/linux/mkl/lib/intel64/libmkl_sequential.a,/opt/apps/intel/16.0.1.150/compilers_and_libraries_2016.1.150/linux/mkl/lib/intel64/libmkl_core.a,-lpthread -o gpuMul
+```
