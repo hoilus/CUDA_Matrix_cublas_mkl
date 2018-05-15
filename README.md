@@ -39,6 +39,7 @@ void gpu_matrix_trans_coales_sharedmem(double *mat_in, double *mat_out) {
 }
 
 ```
+#### For a 1024 x 1024 test matrix:
 ```
 GPU matrix transpose success!!!
 GPU matrix multiplication time: 6.31702 ms.
@@ -52,3 +53,6 @@ Time(%)      Time     Calls       Avg       Min       Max  Name
   2.60%  129.73us         1  129.73us  129.73us  129.73us  gpu_matrix_trans_sharedmem(double*, double*)
   1.79%  89.377us         1  89.377us  89.377us  89.377us  gpu_matrix_trans_coales_sharedmem_NoBankConfl(double*, double*)
 ```
+
+### 3. gpucppMatMul.cu:
+#### matrix-matrix multiplication consumes most of the computation time in scientific computations and deep learning. cublas and blas are the best choices when we do 'dgemm'. 
