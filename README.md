@@ -60,3 +60,25 @@ Time(%)      Time     Calls       Avg       Min       Max  Name
 ```
 nvcc gpucppMatMul.cu -std=c++11 -lcublas -L/opt/apps/intel/16.0.1.150/compilers_and_libraries_2016.1.150/linux/mkl/lib/intel64 --linker-options /opt/apps/intel/16.0.1.150/compilers_and_libraries_2016.1.150/linux/mkl/lib/intel64/libmkl_intel_lp64.a,/opt/apps/intel/16.0.1.150/compilers_and_libraries_2016.1.150/linux/mkl/lib/intel64/libmkl_sequential.a,/opt/apps/intel/16.0.1.150/compilers_and_libraries_2016.1.150/linux/mkl/lib/intel64/libmkl_core.a,-lpthread -o gpuMul
 ```
+```
+// Matrix multiplication by cuBLAS
+// m x k matrix A, k x n matrix B, m x n matrix C = A x B
+// tran(C) = tran(B) x tran(A)
+void gpu_blas_multi(double *matB, double *matA, double *matC, int m, int k, int n) {
+  int lda = n, ldb = k, ldc = n;
+  double alf = 1.0;
+  double bet = 0.0;
+  double *alpha = &alf;
+  double *beta = &bet;
+
+  // Create a handle for cuBLAS
+  cublasHandle_t handle;
+  cublasCreate(&handle);
+
+  // Do the actual multiplication
+  cublasDgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N, n, m, k, alpha, matB, lda, matA, ldb, beta, matC, ldc);
+
+  // Destroy the handle
+  cublasDestroy(handle);
+}
+```
