@@ -1,5 +1,6 @@
 ## Level 3 large matrix multiplication by multi-cpus and multi-gpu cores
 ### Comparing computation efficiency of level 3 matrix multiplication using cublas and blas
+### Author: Liang Hong, Email: lianghong80@gmail.com
 
 ### 1. gpucppadd.cu:
 #### The hardware limits the number of blocks in a single lauch to 65,535 per dimension, and each block has a maximum of 1024 threads per block. In order to break this limit, we can use grid-stride loop to calculate the arrays with arbitrary length.
@@ -81,4 +82,17 @@ void gpu_blas_multi(double *matB, double *matA, double *matC, int m, int k, int 
   // Destroy the handle
   cublasDestroy(handle);
 }
+```
+#### For the two 32768 x 1024 and 1024 x 32768 test matrix:
+```
+GPU matrix multiplication success!!!
+GPU matrix multiplication time: 11962.5 ms.
+CPU matrix multiplication time: 108.519 s.
+==12238== Profiling application: ./gpuMul
+==12238== Profiling result:
+Time(%)      Time     Calls       Avg       Min       Max  Name
+ 51.68%  6.09732s         1  6.09732s  6.09732s  6.09732s  gpu_matrix_multi(double*, double*, double*, int, int, int)
+ 32.34%  3.81614s         1  3.81614s  3.81614s  3.81614s  [CUDA memcpy DtoH]
+ 15.31%  1.80619s         1  1.80619s  1.80619s  1.80619s  dgemm_sm_heavy_ldg_nn
+  0.67%  79.074ms         3  26.358ms  1.5680us  39.752ms  [CUDA memcpy HtoD]
 ```
